@@ -42,9 +42,22 @@ endfunc
 
 func! s:ctags_options() abort
   let l:ctags_options  = ['-R']
+  let l:ctags_options += s:tags_dir_option()
   let l:ctags_options += s:defs_options()
 
   return l:ctags_options
+endfunc
+
+func! s:tags_dir_option() abort
+  let l:tags_dir_option = []
+
+  for l:tags_dir in g:yacg_tags_directories
+    if isdirectory(l:tags_dir)
+      let l:tags_dir_option = ['-f ' . l:tags_dir . '/tags']
+    endif
+  endfor
+
+  return l:tags_dir_option
 endfunc
 
 func! s:defs_options() abort
