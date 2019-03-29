@@ -12,12 +12,31 @@ let s:ctags_defs_dir = expand('<sfile>:p:h') . '/../ctags_custom_languages'
 func! yacg#generate() abort
   let l:ctags_bin = s:ctags_bin()
   if !len(l:ctags_bin)
-    echoerr "ctags is not installed!"
+    echoerr 'ctags is not installed!'
     return
   endif
 
-  call system(s:command(l:ctags_bin))
-  echo "yacg: ctags generated"
+  let l:command = s:command(l:ctags_bin)
+  if g:yacg_execute_async && (v:version >= 800)
+    call s:generate_async(l:command)
+  else
+    call s:generate(l:command)
+  endif
+endfunc
+
+func! s:generate(command) abort
+  call system(a:command)
+  call s:show_tags_generated_message()
+endfunc
+
+func! s:generate_async(command) abort
+  call job_start([&shell, &shellcmdflag, a:command], {
+    \ 'exit_cb': function('s:generate_async_exit_callback')
+    \ })
+endfunc
+
+func! s:generate_async_exit_callback(job, status) abort
+  call s:show_tags_generated_message()
 endfunc
 
 func! s:ctags_bin() abort
@@ -72,4 +91,8 @@ func! s:defs_options() abort
   endfor
 
   return l:defs_options
+endfunc
+
+func! s:show_tags_generated_message() abort
+  echo 'yacg: ctags generated'
 endfunc

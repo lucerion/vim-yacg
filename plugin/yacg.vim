@@ -27,4 +27,8 @@ for tags_dir in g:yacg_tags_directories
   silent exec 'set tags+=' . tags_dir.'/tags'
 endfor
 
+if !exists('g:yacg_execute_async')
+  let g:yacg_execute_async = 1
+endif
+
 comm! GenerateTags call yacg#generate()
