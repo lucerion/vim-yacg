@@ -63,6 +63,7 @@ func! s:ctags_options() abort
   let l:ctags_options  = ['-R']
   let l:ctags_options += s:tags_dir_option()
   let l:ctags_options += s:defs_options()
+  let l:ctags_options += s:exclude_options()
 
   return l:ctags_options
 endfunc
@@ -91,6 +92,16 @@ func! s:defs_options() abort
   endfor
 
   return l:defs_options
+endfunc
+
+func! s:exclude_options()
+  let l:exclude_options = []
+
+  if !g:yacg_node_modules
+    call add(l:exclude_options, '--exclude=node_modules')
+  endif
+
+  return l:exclude_options
 endfunc
 
 func! s:show_tags_generated_message() abort
