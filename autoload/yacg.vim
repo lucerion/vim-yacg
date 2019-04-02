@@ -95,13 +95,13 @@ func! s:defs_options() abort
 endfunc
 
 func! s:exclude_options()
-  let l:exclude_options = []
+  let l:exclude_options = g:yacg_ignore
 
   if !g:yacg_node_modules
-    call add(l:exclude_options, '--exclude=node_modules')
+    call add(l:exclude_options, 'node_modules')
   endif
 
-  return l:exclude_options
+  return map(copy(l:exclude_options), '"--exclude=".v:val')
 endfunc
 
 func! s:show_tags_generated_message() abort

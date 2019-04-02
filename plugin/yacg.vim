@@ -31,6 +31,10 @@ if !exists('g:yacg_execute_async')
   let g:yacg_execute_async = 1
 endif
 
+if !exists('g:yacg_ignore')
+  let g:yacg_ignore = []
+endif
+
 if !exists('g:yacg_node_modules')
   let g:yacg_node_modules = 0
 endif
