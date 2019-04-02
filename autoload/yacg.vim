@@ -7,7 +7,7 @@
 " ==============================================================
 
 let s:default_ctags_bin = 'ctags'
-let s:default_options = ['-R', '--tag-relative=yes']
+let s:default_options = ['-R .', '--tag-relative=yes']
 let s:ctags_defs_dir = expand('<sfile>:p:h') . '/../ctags_custom_languages'
 
 func! yacg#generate() abort
@@ -58,6 +58,7 @@ func! s:command(ctags_bin) abort
   let l:command += s:tags_dir_option()
   let l:command += s:defs_options()
   let l:command += s:exclude_options()
+  let l:command += s:rubygems_paths()
   let l:command += ['2>/dev/null']
 
   return join(l:command)
@@ -91,7 +92,7 @@ func! s:defs_options() abort
   return l:defs_options
 endfunc
 
-func! s:exclude_options()
+func! s:exclude_options() abort
   let l:exclude_options = g:yacg_ignore
 
   if !g:yacg_node_modules
@@ -99,6 +100,26 @@ func! s:exclude_options()
   endif
 
   return map(copy(l:exclude_options), '"--exclude=".v:val')
+endfunc
+
+func! s:rubygems_paths() abort
+  if !g:yacg_rubygems
+    return []
+  endif
+
+  if !filereadable('Gemfile.lock')
+    return []
+  endif
+
+  silent exec '!bundle check &>/dev/null'
+  redraw!
+  if v:shell_error
+    return []
+  endif
+
+  let l:gems_paths = system('bundle show --paths')
+
+  return split(l:gems_paths)
 endfunc
 
 func! s:show_tags_generated_message() abort

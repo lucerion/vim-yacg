@@ -35,4 +35,8 @@ if !exists('g:yacg_node_modules')
   let g:yacg_node_modules = 0
 endif
 
+if !exists('g:yacg_rubygems')
+  let g:yacg_rubygems = 0
+endif
+
 comm! GenerateTags call yacg#generate()
