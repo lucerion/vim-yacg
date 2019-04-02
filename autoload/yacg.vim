@@ -70,7 +70,7 @@ func! s:tags_dir_option() abort
     if isdirectory(l:tags_dir)
       let l:tags_file = l:tags_dir.'/tags'
       call add(l:tags_dir_option, '-f '.l:tags_file)
-      silent exec 'set tags+=' . l:tags_file
+      silent exec 'setl tags+=' . l:tags_file
     endif
   endfor
 
