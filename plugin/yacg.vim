@@ -39,4 +39,15 @@ if !exists('g:yacg_rubygems')
   let g:yacg_rubygems = 0
 endif
 
+if !exists('g:yacg_auto_generate')
+  let g:yacg_auto_generate = 0
+endif
+
+if g:yacg_auto_generate
+  augroup YacgAutoGenerate
+    autocmd!
+    autocmd BufEnter,BufWritePost * call yacg#generate()
+  augroup END
+endif
+
 comm! GenerateTags call yacg#generate()
