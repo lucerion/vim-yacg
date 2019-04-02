@@ -7,6 +7,7 @@
 " ==============================================================
 
 let s:default_ctags_bin = 'ctags'
+let s:default_options = ['-R', '--tag-relative=yes']
 let s:ctags_defs_dir = expand('<sfile>:p:h') . '/../ctags_custom_languages'
 
 func! yacg#generate() abort
@@ -52,7 +53,8 @@ func! s:ctags_bin() abort
 endfunc
 
 func! s:command(ctags_bin) abort
-  let l:command  = [a:ctags_bin, '-R', '--tag-relative=yes']
+  let l:command  = [a:ctags_bin]
+  let l:command += s:default_options
   let l:command += s:tags_dir_option()
   let l:command += s:defs_options()
   let l:command += s:exclude_options()
@@ -66,8 +68,9 @@ func! s:tags_dir_option() abort
 
   for l:tags_dir in g:yacg_tags_directories
     if isdirectory(l:tags_dir)
-      let l:tags_dir_option = ['-f ' . l:tags_dir . '/tags']
-      silent exec 'set tags+=' . l:tags_dir.'/tags'
+      let l:tags_file = l:tags_dir.'/tags'
+      call add(l:tags_dir_option, '-f '.l:tags_file)
+      silent exec 'set tags+=' . l:tags_file
     endif
   endfor
 
