@@ -52,20 +52,13 @@ func! s:ctags_bin() abort
 endfunc
 
 func! s:command(ctags_bin) abort
-  let l:command  = [a:ctags_bin]
-  let l:command += s:ctags_options()
+  let l:command  = [a:ctags_bin, '-R', '--tag-relative=yes']
+  let l:command += s:tags_dir_option()
+  let l:command += s:defs_options()
+  let l:command += s:exclude_options()
   let l:command += ['2>/dev/null']
 
   return join(l:command)
-endfunc
-
-func! s:ctags_options() abort
-  let l:ctags_options  = ['-R']
-  let l:ctags_options += s:tags_dir_option()
-  let l:ctags_options += s:defs_options()
-  let l:ctags_options += s:exclude_options()
-
-  return l:ctags_options
 endfunc
 
 func! s:tags_dir_option() abort
@@ -74,6 +67,7 @@ func! s:tags_dir_option() abort
   for l:tags_dir in g:yacg_tags_directories
     if isdirectory(l:tags_dir)
       let l:tags_dir_option = ['-f ' . l:tags_dir . '/tags']
+      silent exec 'set tags+=' . l:tags_dir.'/tags'
     endif
   endfor
 
