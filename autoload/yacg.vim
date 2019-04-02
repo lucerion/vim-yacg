@@ -7,7 +7,6 @@
 " ==============================================================
 
 let s:default_ctags_bin = 'ctags'
-let s:default_options = ['-R .', '--tag-relative=yes']
 let s:ctags_defs_dir = expand('<sfile>:p:h') . '/../ctags_custom_languages'
 
 func! yacg#generate() abort
@@ -54,10 +53,11 @@ endfunc
 
 func! s:command(ctags_bin) abort
   let l:command  = [a:ctags_bin]
-  let l:command += s:default_options
+  let l:command += ['--tag-relative=yes']
   let l:command += s:tags_dir_option()
   let l:command += s:defs_options()
   let l:command += s:exclude_options()
+  let l:command += ['-R', '.']
   let l:command += s:rubygems_paths()
   let l:command += ['2>/dev/null']
 
@@ -93,7 +93,7 @@ func! s:defs_options() abort
 endfunc
 
 func! s:exclude_options() abort
-  let l:exclude_options = g:yacg_ignore
+  let l:exclude_options = copy(g:yacg_ignore)
 
   if !g:yacg_node_modules
     call add(l:exclude_options, 'node_modules')
