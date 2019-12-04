@@ -16,7 +16,7 @@ if !exists('g:yacg_ctags_binary')
 endif
 
 if !exists('g:yacg_ctags_custom_languages')
-  let g:yacg_ctags_custom_languages = ['elixir', 'javascript']
+  let g:yacg_ctags_custom_languages = ['elixir', 'javascript', 'typescript']
 endif
 
 if !exists('g:yacg_tags_directories')
