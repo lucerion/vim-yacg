@@ -7,7 +7,7 @@
 " ==============================================================
 
 let s:default_ctags_bin = 'ctags'
-let s:ctags_defs_dir = expand('<sfile>:p:h') . '/../ctags_custom_languages'
+let s:ctags_defs_dir = expand('<sfile>:p:h') . '/../ctags'
 
 func! yacg#generate() abort
   let l:ctags_bin = s:ctags_bin()
