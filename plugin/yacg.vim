@@ -15,8 +15,8 @@ if !exists('g:yacg_ctags_binary')
   let g:yacg_ctags_binary = 'ctags'
 endif
 
-if !exists('g:yacg_ctags_custom_languages')
-  let g:yacg_ctags_custom_languages = ['elixir', 'javascript', 'typescript']
+if !exists('g:yacg_ctags_dir')
+  let g:yacg_ctags_dir = '~/.ctags'
 endif
 
 if !exists('g:yacg_tags_directories')
@@ -24,7 +24,7 @@ if !exists('g:yacg_tags_directories')
 endif
 
 if !exists('g:yacg_execute_async')
-  let g:yacg_execute_async = 1
+  let g:yacg_execute_async = v:version >= 800
 endif
 
 if !exists('g:yacg_ignore')
